@@ -40,7 +40,7 @@ def main():
             update_id += 1
 
 
-commands = ["yt", "ct", "closetab", "k", "vu", "vd"]
+
 def echo(bot):
     """Echo the message the user sent."""
     global update_id
@@ -51,33 +51,35 @@ def echo(bot):
         if update.message and len(update.message.text) > 2 and update.message.text[0] == "/":  # your bot can receive updates without messages
             # Reply to the message
             text = update.message.text[1:]
-            for command in commands:
-                if text.startswith(command):
-                    print "command: '"+text+"'"
-                    params = ""
-                    if text.find(" "):
-                        params = text[text.find(" ")+1:]
-                    if command == "yt":
-                        update.message.reply_text("Playing youtube video '" + params + "'")
-                    elif command == "ct":
-                        update.message.reply_text("closing tab")
-                    elif command == "vd":
-                        update.message.reply_text("decreasing volume")
-                    elif command == "vu":
-                        update.message.reply_text("increasing volume")
 
-                    #print(["ssh", "-i", "/Users/erik/.ssh/id_rsa", "east@ea.st.hmc.edu", "bash", "-l", "'/home/east/bin/" + command + params + "'"])
-                    #command = ["/usr/bin/ssh", "-i", "/Users/erik/.ssh/id_rsa", "east@ea.st.hmc.edu", "bash", "-l", "'/home/east/bin/" + command, + params + "'"]
-                    commandstr = ["/usr/bin/ssh","east@ea.st.hmc.edu", "bash -l '/home/east/bin/" + command + " " + params + "'"]
-                    print command
-                    print "executing command"
-                    #Popen(command)
-                    commandstr = "ssh -i /Users/erik/.ssh/id_rsa east@ea.st.hmc.edu bash -l '/home/east/bin/" + command + " " + params + "'"
-                    print commandstr
-                    os.system(commandstr)
-                    print "done"
+            print "command: '"+text+"'"
+            params = ""
+            command = text[:text.find(" ")]
+            if text.find(" "):
+                params = text[text.find(" ")+1:]
 
-                #update.message.reply_text(update.message.text)
+            if command == "yt":
+                update.message.reply_text("Playing youtube video '" + params + "'")
+            elif command == "ct":
+                update.message.reply_text("closing tab")
+            elif command == "vd":
+                update.message.reply_text("decreasing volume")
+            elif command == "vu":
+                update.message.reply_text("increasing volume")
+            else:
+                update.message.reply_text("executing: '" + text + "'")
+            #print(["ssh", "-i", "/Users/erik/.ssh/id_rsa", "east@ea.st.hmc.edu", "bash", "-l", "'/home/east/bin/" + command + params + "'"])
+            #command = ["/usr/bin/ssh", "-i", "/Users/erik/.ssh/id_rsa", "east@ea.st.hmc.edu", "bash", "-l", "'/home/east/bin/" + command, + params + "'"]
+            commandarr = ["/home/east/bin/" + command, params]
+            print command
+            print "executing command"
+            Popen(commandarr)
+            #commandstr = "ssh -i /Users/erik/.ssh/id_rsa east@ea.st.hmc.edu bash -l '/home/east/bin/" + command + " " + params + "'"
+            #print commandstr
+            os.system(commandstr)
+            print "done"
+
+            #update.message.reply_text(update.message.text)
 
 
 if __name__ == '__main__':
